@@ -30,7 +30,7 @@ $(document).ready(function() {
     for(let cell = 3; cell <= maxSize; cell+=2){
       let listLevel = document.createElement('li');
       listLevel.innerText = cell;
-      listLevel.setAttribute('id', 'level');
+      listLevel.setAttribute('class', 'level');
       dropdownLevel.append(listLevel);
     }
   }
