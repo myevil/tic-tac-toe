@@ -57,7 +57,7 @@ $(document).ready(function() {
       for (let row = 0; row < size; row++){
         let rowBoard = document.createElement('li');
         rowBoard.innerHTML = '+';
-        rowBoard.setAttribute('class', 'btn span1');
+        rowBoard.setAttribute('class', `btn span1 h${row} v${column}`);
         rowBoard.setAttribute('id', count.toString());
         collumnBoard.append(rowBoard);
         count++;
@@ -70,13 +70,15 @@ $(document).ready(function() {
 
   const addEventClickToSquare = (element, size) => {
     element.click(function() {
-      if (checkOWinner(size))
+      let checkHori = $(this)[0].classList[2];
+      let checkVerti = $(this)[0].classList[3];
+      if (checkWinner(size, 'o', checkHori, checkVerti))
       {
         alert('O has won the game. Start a new game')
         cleanGame()
         count = 0;
       }
-      else if (checkXWinner(size))
+      else if (checkWinner(size, 'x', checkHori, checkVerti))
       {
         alert('X wins has won the game. Start a new game')
         cleanGame()
@@ -95,7 +97,7 @@ $(document).ready(function() {
       else if (count%2 == 0)
       {
         clickChangeText(o, this, 'btn-primary')
-          if (checkOWinner(size))
+          if (checkWinner(size, 'o', checkHori, checkVerti))
           {
             alert('O wins')
             count = 0
@@ -106,7 +108,7 @@ $(document).ready(function() {
         else
       {
         clickChangeText(x, this, 'btn-info');
-        if (checkXWinner(size))
+        if (checkWinner(size, 'x', checkHori, checkVerti))
         {
           alert('X wins')
           count = 0
@@ -123,94 +125,80 @@ $(document).ready(function() {
     $(element).addClass(`disable ${whoseTurn} ${btnStyle}`);
   }
 
-  const check = (indexData, condition) => {
-    for(let i = 0; i < indexData.length; i++){
-      if(!$(`#${indexData[i]}`).hasClass(condition)){
-        return false
-      }
-    }
-    return true
-  }
-
-  const checkVertical = (condition, size) => {
-    let boardSize = parseInt(size, 10);
-    for(let i = 0; i < boardSize * boardSize; i +=  boardSize){
-      let indexData = [];
-      for(let j = i; j < boardSize + i; j++){
-        indexData.push(j);
-      }
-      if(check(indexData, condition)){
-        return true;
-      }
+  const checkConditionStatus = (manyOfTrue, size) => {
+    if(manyOfTrue.length === size){
+      return true;
     }
     return false;
   }
 
-  const checkHorizontal = (condition, size) => {
-    let boardSize = parseInt(size, 10);
-    for(let i = 0; i < boardSize; i ++){
-      let indexData = [];
-      for(let j = i; j < boardSize * boardSize; j += boardSize){
-        indexData.push(j);
+  const check = (horiClass, size, condition) => {
+    let manyOfTrue = [];
+    for(let i = 0; i < size; i++){
+      if($(`.${horiClass}`)[i].classList[5] === condition){
+        manyOfTrue.push(true);
       }
-      if(check(indexData, condition)){
-        return true;
-      }
+    }
+    return checkConditionStatus(manyOfTrue, size);
+  }
+
+  const checkVertical = (condition, vertiClass) => {
+    const manyVerticalClass = $(`.${vertiClass}`).length;
+    if(check(vertiClass, manyVerticalClass, condition)){
+      return true;
+    }
+    return false;
+  }
+
+  const checkHorizontal = (condition, horiClass) => {
+    const manyHorizontalClass = $(`.${horiClass}`).length;
+    if(check(horiClass, manyHorizontalClass, condition)){
+      return true;
     }
     return false;
   }
 
   const checkDiagonalKiri = (condition, size) => {
     let boardSize = parseInt(size, 10);
-    let indexData = [];
-    for(let j = 0; j < boardSize * boardSize; j += boardSize + 1 ){
-      indexData.push(j);
+    let manyOfTrue = [];
+    for(let i = 0; i < boardSize; i++){
+      for(let j = 0; j < boardSize; j++){
+        if(i === j){
+          if($(`.h${i}.v${j}`)[0].classList[5] === condition){
+            manyOfTrue.push(true);
+          }
+        }
+      }
     }
-    if(check(indexData, condition)){
-      return true;
-    }
-    return false
+    return checkConditionStatus(manyOfTrue, boardSize)
   }
 
   const checkDiagonalKanan = (condition, size) => {
     let boardSize = parseInt(size, 10);
-    let indexData = [];
-    for(let j = boardSize-1; j < boardSize * boardSize - 1; j += boardSize - 1){
-      indexData.push(j);
+    let manyOfTrue = [];
+    for(let i = 0; i < boardSize; i++){
+      for(let j = boardSize-1; j >= 0; j--){
+        if(i+j === boardSize-1){
+          if($(`.h${i}.v${j}`)[0].classList[5] === condition){
+            manyOfTrue.push(true);
+          }
+        }
+      }
     }
-    if(check(indexData, condition)){
-      return true;
-    }
-    return false
+    return checkConditionStatus(manyOfTrue, boardSize);
   }
 
-  const checkOWinner = (size) => {
-    if(checkHorizontal('o', size)){
+  const checkWinner = (size, whoseTurn, checkHori, checkVerti) => {
+    if(checkHorizontal(whoseTurn, checkHori)){
       return true
     }
-    if(checkVertical('o', size)){
+    if(checkVertical(whoseTurn, checkVerti)){
       return true
     }
-    if(checkDiagonalKanan('o', size)){
+    if(checkDiagonalKanan(whoseTurn, size)){
       return true
     }
-    if(checkDiagonalKiri('o', size)){
-      return true
-    }
-    return false
-  }
-
-  const checkXWinner = (size) => {
-    if(checkHorizontal('x', size)){
-      return true
-    }
-    if(checkVertical('x', size)){
-      return true;
-    }
-    if(checkDiagonalKanan('x', size)){
-      return true
-    }
-    if(checkDiagonalKiri('x', size)){
+    if(checkDiagonalKiri(whoseTurn, size)){
       return true
     }
     return false
