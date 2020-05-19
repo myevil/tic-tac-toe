@@ -213,7 +213,7 @@ function declareWinner(winner) {
   if(winner === 'o') {
     document.querySelector(".endgame .text").innerText = 'O has won the game. Start a new game';
     o_win += 1
-    $('#o_win').text(x_win)
+    $('#o_win').text(o_win)
   }else if(winner === 'x'){
     document.querySelector(".endgame .text").innerText = 'X has won the game. Start a new game';
     x_win += 1
