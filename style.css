@@ -4,42 +4,36 @@
     font-family:Georgia, "Times New Roman", Times, serif;
 }
 #tic-tac-toe #game li {
-    float:left;
-    padding:0;
+    padding: 20px;
     list-style:none;
     text-align:center;
-    margin-bottom:20px;
-    color:#fff;
-    height:60px;
-    line-height:60px;
+    margin: 0px 10px 20px;
     font-size:40px;
     color:#ccc
 }
 #tic-tac-toe #game li.disable {
     color:#fff
 }
-#tic-tac-toe #game {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-.new_span {
+
+.new {
     width: 100%;
+}
+
+.new .score {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
+
 #tic-tac-toe #reset {
-    padding:5px 10px;
+    padding:10px 20px;
     color:#fff;
     font-family:Arial, Helvetica, sans-serif;
     font-size:20px;
-    clear:both;
     cursor:pointer;
-    float:left;
     text-align:center;
     text-transform:uppercase;
     outline:none;
-    width:204px
 }
 .input-prepend span.pre_text {
     width:55px
@@ -48,7 +42,8 @@
     width: 200px;
 }
 .input-prepend {
-    margin-bottom:10px
+    margin-bottom:10px;
+    display: block;
 }
 .clr {
     clear:both; height:0
@@ -66,8 +61,8 @@
     color:#000;
 }
 #tic-tac-toe {
-    width:220px;
-    margin:0 auto
+    width: 1024px;
+    margin: 30px auto 0px
 }
 .input-append .win_times {
     background:#fff;
@@ -84,6 +79,7 @@
     font-size: 16px;
     border: none;
     cursor: pointer;
+    display: none;
 }
 
 .dropbtn:hover, .dropbtn:focus {
@@ -94,7 +90,7 @@
     position: relative;
     display: flex;
     flex-flow: column;
-    margin-bottom: 10px;
+    margin: 5px 0px 10px;
 }
 
 .dropdown-content {
@@ -104,7 +100,8 @@
     min-width: 160px;
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    right: 0;
+    right: 50%;
+    margin-right: -80px;
     z-index: 1;
 }
 
@@ -118,3 +115,36 @@
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+.endgame {
+    display: none;
+    width: 400px;
+    top: 120px;
+    background-color: rgba(97, 97, 97, 0.9);
+    position: absolute;
+    left: 50%;
+    margin-left: -200px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-size: 2em;
+}
+
+.board {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text {
+    font-size: 18px;
+    padding: 0px 40px 20px;
+    line-height: 1em;
+}
+
+.mode-game {
+    text-align: center;
+}
